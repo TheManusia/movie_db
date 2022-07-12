@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:movie_db/view/home_view.dart';
+import 'package:movie_db/view/search_view.dart';
 import 'package:movie_db/viewmodel/dashboard_viewmodel.dart';
 
 class DashboardView extends StatelessWidget {
@@ -20,7 +21,7 @@ class DashboardView extends StatelessWidget {
               index: controller.currentIndex,
               children: const [
                 HomeView(),
-                Center(child: Text('pages 2')),
+                SearchView(),
                 Center(child: Text('pages 3')),
               ],
             ),
