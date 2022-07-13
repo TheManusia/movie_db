@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:movie_db/view/home_view.dart';
-import 'package:movie_db/view/search_view.dart';
-import 'package:movie_db/viewmodel/dashboard_viewmodel.dart';
+import 'package:movie_db/modules/home/home_view.dart';
+import 'package:movie_db/modules/search/search_view.dart';
+import 'package:movie_db/modules/dashboard/dashboard_controller.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends GetWidget<DashboardController> {
   const DashboardView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DashboardViewModel>(
-      initState: (_) {
-        Get.put(DashboardViewModel());
-      },
-      builder: (controller) {
-        return Scaffold(
-          body: SafeArea(
-            child: IndexedStack(
-              index: controller.currentIndex,
+    return Scaffold(
+      body: SafeArea(
+        child: Obx(() => IndexedStack(
+              index: controller.currentIndex.value,
               children: const [
                 HomeView(),
                 SearchView(),
                 Center(child: Text('pages 3')),
               ],
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
+            )),
+      ),
+      bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: controller.changeIndex,
-            currentIndex: controller.currentIndex,
+            currentIndex: controller.currentIndex.value,
             selectedIconTheme: IconThemeData(
               color: Theme.of(context).colorScheme.secondary,
             ),
@@ -51,9 +46,7 @@ class DashboardView extends StatelessWidget {
                 label: 'Profile',
               ),
             ],
-          ),
-        );
-      },
+          )),
     );
   }
 }

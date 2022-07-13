@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchViewModel extends GetxController {
+class SearchController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   var latestSearch = <String>[];
   final movieList = <Map<String, String>>[
