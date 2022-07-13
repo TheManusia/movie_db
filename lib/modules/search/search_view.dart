@@ -43,10 +43,9 @@ class SearchView extends GetView<SearchController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimary,
-              borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -66,18 +65,31 @@ class SearchView extends GetView<SearchController> {
                     isDense: true,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text('Latest search'),
-                const SizedBox(height: 8),
-                SingleChildScrollView(
-                  primary: false,
-                  scrollDirection: Axis.horizontal,
-                  child: Obx(() => Row(
-                        children: controller.latestSearch.value.map((text) {
-                          return latestSearchCard(context, text, controller);
-                        }).toList(),
-                      )),
-                ),
+                Obx(() {
+                  if (controller.latestSearch.isNotEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 8),
+                        const Text('Latest search'),
+                        const SizedBox(height: 8),
+                        SingleChildScrollView(
+                          primary: false,
+                          scrollDirection: Axis.horizontal,
+                          child: Obx(() => Row(
+                                children:
+                                    controller.latestSearch.value.map((text) {
+                                  return latestSearchCard(
+                                      context, text, controller);
+                                }).toList(),
+                              )),
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                }),
               ],
             ),
           ),
