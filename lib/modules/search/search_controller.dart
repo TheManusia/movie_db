@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class SearchController extends GetxController {
   final TextEditingController searchController = TextEditingController();
-  var latestSearch = <String>[];
+  var latestSearch = <String>[].obs;
   final movieList = <Map<String, String>>[
     {
       'title': 'The Shawshank Redemption',
@@ -79,16 +79,25 @@ class SearchController extends GetxController {
     },
   ];
 
-  void addLatestSearch(String text) {
+  var searchResult = <Map<String, String>>[].obs;
+
+  @override
+  void onInit() {
+    searchResult.value = movieList;
+    super.onInit();
+  }
+
+  void searchMovie(String text) {
     if (text.isNotEmpty) {
       latestSearch.insert(0, text);
-      latestSearch = latestSearch.toSet().toList();
+      latestSearch.value = latestSearch.toSet().toList();
     }
-    update();
+    searchResult.value = movieList.where((movie) => (movie['title'] ?? '')
+        .toLowerCase()
+        .contains(text.toLowerCase())).toList();
   }
 
   void setSearchController(String text) {
     searchController.text = text;
-    update();
   }
 }

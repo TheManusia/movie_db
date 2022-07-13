@@ -38,59 +38,60 @@ class SearchView extends GetView<SearchController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        primary: false,
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: controller.searchController,
-                onSubmitted: (value) {
-                  controller.addLatestSearch(value);
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(LineIcons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40)),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: controller.searchController,
+                  style: const TextStyle(fontSize: 14),
+                  onSubmitted: controller.searchMovie,
+                  decoration: const InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: Icon(LineIcons.search),
+                    contentPadding: EdgeInsets.all(0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                    ),
+                    isDense: true,
                   ),
-                  isDense: true,
                 ),
-              ),
-              const SizedBox(height: 16),
-              const Text('Latest search'),
-              const SizedBox(height: 8),
-              SingleChildScrollView(
-                primary: false,
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: controller.latestSearch.map((text) {
-                    return latestSearchCard(context, text, controller);
-                  }).toList(),
+                const SizedBox(height: 8),
+                const Text('Latest search'),
+                const SizedBox(height: 8),
+                SingleChildScrollView(
+                  primary: false,
+                  scrollDirection: Axis.horizontal,
+                  child: Obx(() => Row(
+                        children: controller.latestSearch.value.map((text) {
+                          return latestSearchCard(context, text, controller);
+                        }).toList(),
+                      )),
                 ),
-              ),
-              const SizedBox(height: 16),
-              ListView.builder(
+              ],
+            ),
+          ),
+          Expanded(
+            child: Obx(
+              () => ListView.builder(
                 primary: false,
                 shrinkWrap: true,
-                itemCount: controller.movieList
-                    .where((element) => (element['title'] ?? '')
-                    .toLowerCase()
-                    .contains(
-                    controller.searchController.text.toLowerCase()))
-                    .length,
+                itemCount: controller.searchResult.value.length,
                 itemBuilder: (context, index) {
-                  var movie = controller.movieList
-                      .where((element) => (element['title'] ?? '')
-                      .toLowerCase()
-                      .contains(controller.searchController.text
-                      .toLowerCase()))
-                      .toList()[index];
+                  var movie = controller.searchResult[index];
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -103,7 +104,7 @@ class SearchView extends GetView<SearchController> {
                           borderRadius: BorderRadius.circular(8),
                           child: CachedNetworkImage(
                             imageUrl:
-                            'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wJOLiZIDvtmNbOaaHxQrRGzCAEu.jpg',
+                                'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wJOLiZIDvtmNbOaaHxQrRGzCAEu.jpg',
                             width: 80,
                             height: 120,
                             fit: BoxFit.cover,
@@ -146,9 +147,8 @@ class SearchView extends GetView<SearchController> {
                                   Icon(
                                     LineIcons.starAlt,
                                     size: 14,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
@@ -177,9 +177,9 @@ class SearchView extends GetView<SearchController> {
                   );
                 },
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
