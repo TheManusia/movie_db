@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:movie_db/modules/home/home_view.dart';
 import 'package:movie_db/modules/search/search_view.dart';
 import 'package:movie_db/modules/dashboard/dashboard_controller.dart';
+import 'package:movie_db/modules/yourmovie/yourmovie_view.dart';
 
 class DashboardView extends GetWidget<DashboardController> {
   const DashboardView({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class DashboardView extends GetWidget<DashboardController> {
               children: const [
                 HomeView(),
                 SearchView(),
-                Center(child: Text('pages 3')),
+                YourMoviesView(),
               ],
             )),
       ),
@@ -42,8 +43,8 @@ class DashboardView extends GetWidget<DashboardController> {
                 label: 'Search',
               ),
               BottomNavigationBarItem(
-                icon: Icon(LineIcons.user),
-                label: 'Profile',
+                icon: Icon(LineIcons.television),
+                label: 'Your Movies',
               ),
             ],
           )),
