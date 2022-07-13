@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:movie_db/modules/home/home_controller.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends GetWidget<HomeController> {
   const HomeView({Key? key}) : super(key: key);
 
   Widget categoryCard(String title, Color color) {
